@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "paths": {
+      "@specc/types": ["../types/src/index.ts"],
+      "@specc/i18n": ["../i18n/src/index.ts"],
+      "@/*": ["./src/*"]
+    }
+  }
+}

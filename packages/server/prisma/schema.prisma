@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  admin
+  user
+}
+
+enum WorkspaceMemberRole {
+  owner
+  admin
+  member
+}
+
+model User {
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  settings     Json?
+  role         UserRole @default(user)
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  sessions         Session[]
+  workspaceMembers WorkspaceMember[]
+
+  @@map("users")
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  expiresAt DateTime @map("expires_at") @db.Timestamptz
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId], name: "sessions_user_id_idx")
+  @@index([expiresAt], name: "sessions_expires_at_idx")
+  @@map("sessions")
+}
+
+model Workspace {
+  id          String   @id @default(uuid())
+  slug        String   @unique
+  name        String
+  description String?
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  members WorkspaceMember[]
+
+  @@map("workspaces")
+}
+
+model WorkspaceMember {
+  id          String              @id @default(uuid())
+  workspaceId String              @map("workspace_id")
+  userId      String              @map("user_id")
+  role        WorkspaceMemberRole @default(member)
+  createdAt   DateTime            @default(now()) @map("created_at") @db.Timestamptz
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, userId], name: "workspace_members_workspace_user_uidx")
+  @@map("workspace_members")
+}
