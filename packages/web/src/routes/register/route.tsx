@@ -1,4 +1,33 @@
+import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 import AuthPage from "@/components/auth/AuthPage";
+
+function parseLang(cookieHeader: string): "zh" | "en" {
+  return /(?:^|;\s*)i18next=en/.test(cookieHeader) ? "en" : "zh";
+}
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  return { lang: parseLang(request.headers.get("Cookie") ?? "") };
+}
+
+export const meta: MetaFunction<typeof loader> = ({ data }) =>
+  data?.lang === "en"
+    ? [
+        { title: "Register — specc.sh" },
+        {
+          name: "description",
+          content:
+            "Create a specc.sh account and start building production-grade apps with AI Coding.",
+        },
+        { name: "robots", content: "noindex, nofollow" },
+      ]
+    : [
+        { title: "注册 — specc.sh" },
+        {
+          name: "description",
+          content: "创建 specc.sh 账号，开始用 AI Coding 构建生产级应用。",
+        },
+        { name: "robots", content: "noindex, nofollow" },
+      ];
 
 export default function RegisterRoute() {
   return <AuthPage initialMode="register" />;

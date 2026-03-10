@@ -1,8 +1,14 @@
 import { useEffect } from "react";
+import type { MetaFunction } from "react-router";
 import { Outlet, useNavigate, useNavigation } from "react-router";
 import { WorkspaceRedirectSkeleton } from "@/components/skeleton";
 import { useAuth, WorkspaceListContext } from "@/hooks";
 import { trpc } from "@/lib/trpc";
+
+export const meta: MetaFunction = () => [
+  { title: "控制台 — specc.sh" },
+  { name: "robots", content: "noindex, nofollow" },
+];
 
 export default function DashboardRoot() {
   const { user, isLoading } = useAuth();

@@ -1,5 +1,11 @@
 import { useTranslation } from "react-i18next";
+import type { MetaFunction } from "react-router";
 import ErrorPage from "@/components/error/ErrorPage";
+
+export const meta: MetaFunction = () => [
+  { title: "页面不存在 — specc.sh" },
+  { name: "robots", content: "noindex, nofollow" },
+];
 
 export default function NotFoundRoute() {
   const { t } = useTranslation();
