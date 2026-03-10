@@ -283,17 +283,48 @@ show_missing_instructions() {
   exit 1
 }
 
+# ── create docker-compose shim (helper used in multiple places) ───────────────
+_create_compose_shim() {
+  local run_as="$1"
+  # prefer tee so sudo works; fallback to direct write when root
+  if [ -n "$run_as" ]; then
+    printf '#!/bin/sh\nexec docker compose "$@"\n' | $run_as tee /usr/local/bin/docker-compose > /dev/null
+    $run_as chmod +x /usr/local/bin/docker-compose
+  else
+    printf '#!/bin/sh\nexec docker compose "$@"\n' > /usr/local/bin/docker-compose
+    chmod +x /usr/local/bin/docker-compose
+  fi
+}
+
 # ── auto-install missing deps on Linux ────────────────────────────────────────
 auto_install_linux() {
   local run_as=""
-  [ "$(id -u)" -ne 0 ] && command -v sudo >/dev/null 2>&1 && run_as="sudo"
-  [ "$(id -u)" -ne 0 ] && ! command -v sudo >/dev/null 2>&1 && {
-    if [ "$LANG_MODE" = "zh" ]; then
-      error "需要 root 权限或 sudo 才能自动安装依赖"
-    else
-      error "Root or sudo access is required for auto-installation"
+
+  if [ "$(id -u)" -ne 0 ]; then
+    if ! command -v sudo >/dev/null 2>&1; then
+      if [ "$LANG_MODE" = "zh" ]; then
+        error "需要 root 权限或 sudo 才能自动安装依赖，当前用户既非 root 也没有 sudo"
+      else
+        error "Root or sudo access is required. Current user is not root and sudo is not available."
+      fi
     fi
-  }
+    run_as="sudo"
+    # Prompt for sudo password once upfront before any installation output.
+    # sudo reads the password directly from /dev/tty, so this works even when
+    # the script is piped (curl | bash).
+    if [ "$LANG_MODE" = "zh" ]; then
+      info "安装依赖需要 sudo 权限，请输入密码（仅需一次）："
+    else
+      info "Installing dependencies requires sudo. You may be prompted for your password:"
+    fi
+    if ! $run_as -v 2>/dev/null; then
+      if [ "$LANG_MODE" = "zh" ]; then
+        error "sudo 认证失败，请确认当前用户有 sudo 权限后重试"
+      else
+        error "sudo authentication failed. Please ensure your user has sudo privileges."
+      fi
+    fi
+  fi
 
   # ── git / make ──
   local sys_pkgs=""
@@ -311,35 +342,79 @@ auto_install_linux() {
 
   # ── docker ──
   if ! command -v docker >/dev/null 2>&1; then
-    if [ "$LANG_MODE" = "zh" ]; then
-      info "安装 Docker（阿里云镜像加速）..."
-      curl -fsSL https://get.docker.com | $run_as bash -s -- --mirror Aliyun
+    if $IS_WSL2; then
+      # WSL2: Docker Engine auto-install is unreliable; requires Docker Desktop on Windows.
+      if [ "$LANG_MODE" = "zh" ]; then
+        printf "\n"
+        printf "${YELLOW}╔══════════════════════════════════════════════════════════════╗${NC}\n"
+        printf "${YELLOW}║  检测到 WSL2 — 需要在 Windows 上手动安装 Docker Desktop     ║${NC}\n"
+        printf "${YELLOW}╚══════════════════════════════════════════════════════════════╝${NC}\n\n"
+        printf "  ${BOLD}请在 Windows 主机上依次完成以下操作，完成后回到此窗口按 Enter：${NC}\n\n"
+        printf "  ${BOLD}${YELLOW}1.${NC}  下载并安装 Docker Desktop for Windows\n"
+        printf "      ${CYAN}https://www.docker.com/products/docker-desktop/${NC}\n\n"
+        printf "  ${BOLD}${YELLOW}2.${NC}  打开 Docker Desktop → Settings → Resources → WSL Integration\n"
+        printf "      勾选当前 WSL2 发行版（如 Ubuntu），点击  Apply & Restart\n\n"
+        printf "  ${BOLD}${YELLOW}3.${NC}  确认 Docker Desktop 右下角状态为 ${GREEN}Running${NC}\n\n"
+        printf "  ${YELLOW}⚠  提示：安装完成并开启 WSL 集成后，可能需要重新打开终端窗口${NC}\n"
+        printf "      ${YELLOW}才能使 docker 命令生效。届时请重新运行此脚本。${NC}\n\n"
+        printf "  完成后按 ${GREEN}Enter${NC} 继续... "
+      else
+        printf "\n"
+        printf "${YELLOW}╔══════════════════════════════════════════════════════════════╗${NC}\n"
+        printf "${YELLOW}║  WSL2 detected — Docker Desktop must be installed manually   ║${NC}\n"
+        printf "${YELLOW}╚══════════════════════════════════════════════════════════════╝${NC}\n\n"
+        printf "  ${BOLD}Please complete the following steps on your Windows host, then press Enter:${NC}\n\n"
+        printf "  ${BOLD}${YELLOW}1.${NC}  Download and install Docker Desktop for Windows:\n"
+        printf "      ${CYAN}https://www.docker.com/products/docker-desktop/${NC}\n\n"
+        printf "  ${BOLD}${YELLOW}2.${NC}  Open Docker Desktop → Settings → Resources → WSL Integration\n"
+        printf "      Enable your WSL2 distro (e.g. Ubuntu), click Apply & Restart\n\n"
+        printf "  ${BOLD}${YELLOW}3.${NC}  Confirm Docker Desktop status indicator shows ${GREEN}Running${NC}\n\n"
+        printf "  ${YELLOW}⚠  Note: after enabling WSL integration you may need to open a NEW${NC}\n"
+        printf "      ${YELLOW}terminal window for 'docker' to appear in PATH. If so, re-run this script.${NC}\n\n"
+        printf "  When done, press ${GREEN}Enter${NC} to continue... "
+      fi
+      # Need TTY to wait for user; if not available, bail out with instructions.
+      if { : </dev/tty; } 2>/dev/null; then
+        read -r _ </dev/tty 2>/dev/null || true
+      else
+        printf "\n"
+        if [ "$LANG_MODE" = "zh" ]; then
+          error "WSL2 下无法自动安装 Docker，且当前终端不支持交互。请手动安装 Docker Desktop 后重新运行脚本。"
+        else
+          error "Cannot auto-install Docker in WSL2 and no interactive TTY found. Install Docker Desktop then re-run."
+        fi
+      fi
+      printf "\n"
+      # Verify docker is now accessible; if not, guide user to reopen terminal.
+      if ! command -v docker >/dev/null 2>&1; then
+        if [ "$LANG_MODE" = "zh" ]; then
+          printf "${YELLOW}  ⚠ 仍未检测到 docker 命令。\n"
+          printf "    请重新打开一个新的终端窗口后再次运行此脚本。${NC}\n\n"
+          error "未找到 docker，请在新终端中重新运行此脚本"
+        else
+          printf "${YELLOW}  ⚠ 'docker' command still not found.\n"
+          printf "    Please open a NEW terminal window and re-run this script.${NC}\n\n"
+          error "'docker' not found — please re-run in a new terminal"
+        fi
+      fi
     else
-      info "Installing Docker..."
-      curl -fsSL https://get.docker.com | $run_as sh
+      if [ "$LANG_MODE" = "zh" ]; then
+        info "安装 Docker（阿里云镜像加速）..."
+        curl -fsSL https://get.docker.com | $run_as bash -s -- --mirror Aliyun
+      else
+        info "Installing Docker..."
+        curl -fsSL https://get.docker.com | $run_as sh
+      fi
+      $run_as systemctl enable --now docker 2>/dev/null || $run_as service docker start 2>/dev/null || true
+      if [ "$LANG_MODE" = "zh" ]; then success "Docker 安装完成"; else success "Docker installed"; fi
     fi
-    $run_as systemctl enable --now docker 2>/dev/null || $run_as service docker start 2>/dev/null || true
-    if [ "$LANG_MODE" = "zh" ]; then success "Docker 安装完成"; else success "Docker installed"; fi
   fi
 
   # ── docker-compose shim (v2 plugin → legacy binary compatibility) ──
-  if ! command -v docker-compose >/dev/null 2>&1; then
-    if docker compose version >/dev/null 2>&1; then
-      if [ "$LANG_MODE" = "zh" ]; then info "创建 docker-compose 兼容脚本..."; else info "Creating docker-compose compatibility shim..."; fi
-      cat > /usr/local/bin/docker-compose << 'SHIM'
-#!/bin/sh
-exec docker compose "$@"
-SHIM
-      chmod +x /usr/local/bin/docker-compose
-      if [ "$LANG_MODE" = "zh" ]; then success "docker-compose 兼容脚本已创建"; else success "docker-compose shim created"; fi
-    elif command -v apt-get >/dev/null 2>&1; then
-      $run_as apt-get install -y docker-compose-plugin
-      cat > /usr/local/bin/docker-compose << 'SHIM'
-#!/bin/sh
-exec docker compose "$@"
-SHIM
-      chmod +x /usr/local/bin/docker-compose
-    fi
+  if ! command -v docker-compose >/dev/null 2>&1 && docker compose version >/dev/null 2>&1; then
+    if [ "$LANG_MODE" = "zh" ]; then info "创建 docker-compose 兼容脚本..."; else info "Creating docker-compose compatibility shim..."; fi
+    _create_compose_shim "$run_as"
+    if [ "$LANG_MODE" = "zh" ]; then success "docker-compose 兼容脚本已创建"; else success "docker-compose shim created"; fi
   fi
 
   # ── node ──
@@ -398,6 +473,14 @@ printf "\n"
 if [ -n "$MISSING_CMDS" ]; then
   case "$OS" in
     debian|rhel|linux)
+      # If non-root with sudo but no TTY, sudo password prompt won't work.
+      if [ "$(id -u)" -ne 0 ] && command -v sudo >/dev/null 2>&1 && ! { : </dev/tty; } 2>/dev/null; then
+        if [ "$LANG_MODE" = "zh" ]; then
+          error "自动安装依赖需要 sudo，但当前终端无法进行交互式输入（无 TTY）。\n  请以 root 身份运行，或手动安装依赖后重新运行脚本。"
+        else
+          error "Auto-install needs sudo but no interactive TTY is available.\n  Please run as root, or install dependencies manually and re-run."
+        fi
+      fi
       if [ "$LANG_MODE" = "zh" ]; then
         printf "${YELLOW}  ⚠ 缺少依赖：${BOLD}$(echo $MISSING_CMDS | xargs)${NC}\n"
         printf "  将自动安装，按 ${RED}Ctrl+C${NC} 取消..."
@@ -454,9 +537,17 @@ while ! docker info >/dev/null 2>&1; do
   _docker_tries=$((_docker_tries + 1))
   if [ "$_docker_tries" -ge 12 ]; then
     if [ "$LANG_MODE" = "zh" ]; then
-      error "Docker 守护进程未运行。请启动 Docker Desktop 或执行：sudo systemctl start docker"
+      if $IS_WSL2; then
+        error "Docker 守护进程未运行。\n  请确认 Docker Desktop 已启动（右下角状态为 Running），\n  并在 Settings → Resources → WSL Integration 中已勾选当前发行版。"
+      else
+        error "Docker 守护进程未运行。请执行：sudo systemctl start docker"
+      fi
     else
-      error "Docker daemon is not running. Please start Docker Desktop (or run: sudo systemctl start docker)"
+      if $IS_WSL2; then
+        error "Docker daemon is not running.\n  Make sure Docker Desktop is running and WSL Integration is enabled\n  for this distro in Settings → Resources → WSL Integration."
+      else
+        error "Docker daemon is not running. Please run: sudo systemctl start docker"
+      fi
     fi
   fi
   if [ "$LANG_MODE" = "zh" ]; then
@@ -479,11 +570,9 @@ if ! command -v docker-compose >/dev/null 2>&1 && docker compose version >/dev/n
   else
     info "Creating docker-compose compatibility shim..."
   fi
-  cat > /usr/local/bin/docker-compose << 'SHIM'
-#!/bin/sh
-exec docker compose "$@"
-SHIM
-  chmod +x /usr/local/bin/docker-compose
+  _shim_run_as=""
+  [ "$(id -u)" -ne 0 ] && command -v sudo >/dev/null 2>&1 && _shim_run_as="sudo"
+  _create_compose_shim "$_shim_run_as"
   if [ "$LANG_MODE" = "zh" ]; then
     success "docker-compose 兼容脚本已创建"
   else
