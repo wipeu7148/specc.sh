@@ -34,10 +34,6 @@
 
 SPECC.SH 在架构层面解决了这个问题。不需要另写文档，也不需要维护规范文件。目录结构、类型系统、Lint 规则、模块边界**本身就是提示词**——代码库自己告诉 AI 该怎么做。
 
----
-
-## 为什么是 SPECC.SH？
-
 你可能试过 **Vibe Coding**——对着 Claude Code、Cursor 或 Copilot 打一段需求，然后祈祷 AI 能写对。有时候行，更多时候不行。AI 写出来的代码编译不过、风格乱、改了这里坏了那里。
 
 **问题不在 AI，在于没有规范。**
@@ -163,13 +159,40 @@ make dev                # 打开浏览器，自己体验一下
 | [pnpm](https://pnpm.io/installation) | 10+ | `npm install -g pnpm` |
 
 <details>
-<summary>Windows（WSL2）</summary>
+<summary>Windows（WSL2）— 强烈推荐</summary>
 
-Windows 用户**必须在 WSL2 内运行**。
+> **不支持纯 Windows（不带 WSL）。**
+> 在原生 Windows 上运行需要手动适配每一条 shell 命令、Makefile 和 Docker 卷路径，极为繁琐且容易出错。
+>
+> **强烈推荐使用 WSL2。** 它在 Windows 内提供真实的 Linux 环境，与 Docker Desktop 无缝集成，并且与 AI 编程工具（Claude Code、Cursor、Copilot 等）完全兼容，整个开发流程顺畅可靠。
 
-1. 以管理员身份打开 PowerShell：`wsl --install`
-2. 安装 [Docker Desktop](https://docs.docker.com/desktop/install/windows-install/)，开启"Use the WSL 2 based engine"
-3. 打开 WSL2 终端，按照 Linux 步骤操作
+### 安装 WSL2（一次性配置）
+
+```powershell
+# 1. 以管理员身份打开 PowerShell，执行：
+wsl --install
+# 默认安装 WSL2 + Ubuntu，提示重启时重启即可。
+```
+
+如果已有 WSL1，升级到 WSL2：
+```powershell
+wsl --set-default-version 2
+wsl --list --verbose          # 确认 VERSION = 2
+```
+
+### 安装 Docker Desktop
+
+1. 下载 [Docker Desktop for Windows](https://docs.docker.com/desktop/install/windows-install/)
+2. 安装时（或在 Settings → General 中）勾选 **"Use the WSL 2 based engine"**
+3. 在 Settings → Resources → WSL Integration 中，为你的 Ubuntu 发行版开启集成
+
+### 在 WSL2 内继续操作
+
+```bash
+# 从开始菜单打开 Ubuntu（或在 PowerShell 中输入 wsl）
+# 之后按照 Linux 步骤操作即可，完全一致
+curl -fsSL https://specc.sh | bash
+```
 
 </details>
 

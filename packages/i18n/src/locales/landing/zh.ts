@@ -213,26 +213,39 @@ export const landingZh = {
       badge: "核心问题",
       sectionTitle: "为什么普通人这么难驾驭 Vibe Coding？",
       sectionSubtitle:
-        "所有人都试过。AI 几秒钟写出几百行代码，看起来很厉害。然后你一运行——崩了。这不是运气差，是结构性问题。",
+        "所有人都试过。你打开 Claude Code 或 Cursor，描述你想要的功能，眼看着 AI 几秒钟写出几百行代码。看起来很厉害。然后你一运行——崩了。",
+      structuralProblem:
+        "这不是运气问题，是结构性问题。你的 AI 代码产出差，核心原因只有一个：没有项目级规范的约束。",
       reasonsTitle: "根本原因",
       reasons: {
         noSpec: {
           title: "没有项目级规范",
-          desc: "AI 不知道你的目录约定、命名规则、架构决策。它只能猜——而且每次猜的都不一样。",
+          desc: "AI 不知道你的目录约定、命名规则、架构决策。它只能猜，而且每次猜得都不一样。",
         },
         noConstraints: {
           title: "没有强制约束",
-          desc: "没有 Lint 规则、类型 Schema、输出契约的硬性约束，AI 就会自由发挥，写出一团风格各异的乱麻。",
+          desc: "没有 Lint 规则、类型 Schema、输出契约的硬性约束，AI 会自由发挥，写出一团风格各异的乱麻。",
         },
         noLanguage: {
           title: "没有共同语言",
-          desc: "你的 AI 工具根本不知道「生产级」对你的项目意味着什么，除非你明确告诉它——每次会话都从零开始。",
+          desc: "你的 AI 工具根本不知道「生产级」对你的项目意味着什么，除非你明确告诉它。",
         },
       },
       result: "结果就是：今天能跑，明天报错，后天没人敢动。",
-      callout: "问题不在 AI，在于它没有可以读懂的结构。",
+      callout: "问题不在 AI，在于它没有一份可以遵循的规范。",
       solution:
-        "SPECC.SH 通过架构来解决这个问题，而不是靠文档。目录布局、类型 Schema、Lint 规则、模块边界本身就是提示词——AI 打开代码库就能读懂并遵守，无需任何解释。",
+        "SPECC.SH 在架构层面解决了这个问题。不需要另写文档，也不需要维护规范文件。目录结构、类型系统、Lint 规则、模块边界本身就是提示词——代码库自己告诉 AI 该怎么做。",
+      speccIntro:
+        "你可能试过 Vibe Coding——对着 Claude Code、Cursor 或 Copilot 打一段需求，然后祈祷 AI 能写对。有时候行，更多时候不行。AI 写出来的代码编译不过、风格乱、改了这里坏了那里。",
+      speccProblem: "问题不在 AI，在于没有规范。",
+      speccDesc:
+        "SPECC.SH 是一套全栈模板，架构本身就是提示词。目录结构、类型系统、模块边界、Lint 规则直接告诉 AI 该怎么做——不需要另外写任何文档。AI 打开这个代码库，就不再凭感觉猜测，而是严格按结构输出代码——第一次就能编译通过、Lint 通过、直接上生产。",
+      contrast: {
+        vibeLabel: "Vibe Coding",
+        vibeDesc: "AI 随意发挥 → 一团乱麻",
+        specLabel: "Spec Coding",
+        specDesc: "AI 遵循规范 → 生产级输出",
+      },
     },
     // Why Not Next.js
     whyNotNextjs: {

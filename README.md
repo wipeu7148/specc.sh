@@ -34,10 +34,6 @@ The result: code that compiles on Monday, breaks on Tuesday, and is impossible t
 
 SPECC.SH solves this at the architecture level. There's no separate doc to write or maintain. The folder structure, type schemas, lint rules, and module contracts **are** the prompt — the codebase itself tells AI exactly what to do, every time.
 
----
-
-## Why SPECC.SH?
-
 You've probably tried **Vibe Coding** — typing prompts into Claude Code, Cursor, or Copilot and hoping for the best. Sometimes it works. Often it doesn't. The AI writes code that doesn't compile, ignores your conventions, or breaks something else.
 
 **The problem isn't the AI. It's the lack of a spec.**
@@ -163,13 +159,40 @@ The intelligence is in the architecture, not the tool.
 | [pnpm](https://pnpm.io/installation) | 10+ | `npm install -g pnpm` |
 
 <details>
-<summary>Windows (WSL2)</summary>
+<summary>Windows (WSL2) — Strongly Recommended</summary>
 
-Windows users **must** run inside WSL2.
+> **Pure Windows (no WSL) is not supported.**
+> Running directly on Windows requires manually porting every shell command, Makefile, and Docker volume path — it is unnecessarily complex and fragile.
+>
+> **WSL2 is strongly recommended.** It gives you a real Linux environment inside Windows, works seamlessly with Docker Desktop, and is fully compatible with AI coding tools (Claude Code, Cursor, Copilot, etc.) — making the entire workflow smooth and reliable.
 
-1. Open PowerShell as Administrator: `wsl --install`
-2. Install [Docker Desktop](https://docs.docker.com/desktop/install/windows-install/) → enable "Use the WSL 2 based engine"
-3. Open your WSL2 terminal and follow the Linux steps
+### Install WSL2 (one-time setup)
+
+```powershell
+# 1. Open PowerShell as Administrator and run:
+wsl --install
+# This installs WSL2 + Ubuntu by default. Reboot when prompted.
+```
+
+If you already have WSL1, upgrade it:
+```powershell
+wsl --set-default-version 2
+wsl --list --verbose          # confirm VERSION = 2
+```
+
+### Install Docker Desktop
+
+1. Download [Docker Desktop for Windows](https://docs.docker.com/desktop/install/windows-install/)
+2. During install (or in Settings → General), enable **"Use the WSL 2 based engine"**
+3. In Settings → Resources → WSL Integration, enable integration for your Ubuntu distro
+
+### Continue inside WSL2
+
+```bash
+# Open Ubuntu from Start Menu (or: wsl in PowerShell)
+# Then follow the Linux steps — everything works identically
+curl -fsSL https://specc.sh | bash
+```
 
 </details>
 

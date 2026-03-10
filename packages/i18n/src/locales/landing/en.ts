@@ -216,7 +216,9 @@ export const landingEn: LandingSchema = {
       badge: "The Real Problem",
       sectionTitle: "Why Is Vibe Coding So Hard to Get Right?",
       sectionSubtitle:
-        "Everyone's tried it. The AI writes hundreds of lines in seconds. It looks great. Then you run it — and it breaks. This isn't bad luck. It's structural.",
+        "Everyone's tried it. You open Claude Code or Cursor, describe what you want, and watch the AI write hundreds of lines in seconds. It looks impressive. Then you run it — and it breaks.",
+      structuralProblem:
+        "This isn't bad luck. It's structural. Your AI output is poor for one reason: there's no project-level spec to constrain it.",
       reasonsTitle: "The Root Causes",
       reasons: {
         noSpec: {
@@ -225,19 +227,30 @@ export const landingEn: LandingSchema = {
         },
         noConstraints: {
           title: "No Enforced Constraints",
-          desc: "Without lint rules, type schemas, and output contracts baked into the project, the AI freestyle-codes its way into an inconsistent mess.",
+          desc: "Without lint rules, type schemas, and output contracts baked into the project, the AI freestyles its way into an inconsistent mess.",
         },
         noLanguage: {
           title: "No Shared Language",
-          desc: 'Your AI tool has no idea what "production-grade" means for your project unless you tell it explicitly — every session starts from scratch.',
+          desc: 'Your AI tool has no idea what "production-grade" means for your project unless you tell it explicitly.',
         },
       },
       result:
-        "The result: code that compiles on Monday, breaks on Tuesday, and is impossible to extend by Friday.",
+        "The result: code that runs today, breaks tomorrow, and nobody dares touch by Friday.",
       callout:
-        "The problem isn't the AI. It's the absence of structure the AI can read.",
+        "The problem isn't the AI. It's the absence of a spec for it to follow.",
       solution:
-        "SPECC.SH solves this through architecture, not documentation. The folder layout, type schemas, lint rules, and module contracts are the prompt — AI reads the codebase and follows it. No docs to write, no conventions to explain.",
+        "SPECC.SH solves this at the architecture level. No extra docs to write. No spec files to maintain. The folder structure, type system, lint rules, and module contracts are the prompt — the codebase tells AI what to do.",
+      speccIntro:
+        "You've probably tried Vibe Coding — throwing a prompt at Claude Code, Cursor, or Copilot and hoping for the best. Sometimes it works. More often it doesn't. The code doesn't compile, the style is all over the place, and changing one thing breaks another.",
+      speccProblem: "The problem isn't the AI. It's the absence of a spec.",
+      speccDesc:
+        "SPECC.SH is a full-stack template where the architecture is the prompt. The folder structure, type system, module boundaries, and lint rules tell AI exactly what to do — no extra documentation needed. When AI opens this codebase, it stops guessing and follows the structure — outputting code that compiles, passes lint, and ships to production on the first try.",
+      contrast: {
+        vibeLabel: "Vibe Coding",
+        vibeDesc: "AI freestyles → chaos",
+        specLabel: "Spec Coding",
+        specDesc: "AI follows spec → production-grade output",
+      },
     },
     // Why Not Next.js
     whyNotNextjs: {

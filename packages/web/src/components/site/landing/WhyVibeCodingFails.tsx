@@ -120,6 +120,16 @@ export function WhyVibeCodingFails() {
           {t("landing.whyVibeFails.sectionSubtitle")}
         </motion.p>
 
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.55, delay: 0.15 }}
+          className="mt-3 text-center text-zinc-700 dark:text-zinc-300 max-w-2xl mx-auto leading-relaxed font-medium"
+        >
+          {t("landing.whyVibeFails.structuralProblem")}
+        </motion.p>
+
         {/* Reason cards */}
         <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-5">
           {REASONS.map(({ key, Icon }, index) => (
@@ -169,6 +179,51 @@ export function WhyVibeCodingFails() {
           <p className="mt-3 text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed">
             {t("landing.whyVibeFails.solution")}
           </p>
+        </motion.div>
+
+        {/* Merged SPECC.SH section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+          className="mt-16 mx-auto max-w-2xl text-center space-y-3"
+        >
+          <p className="text-zinc-500 dark:text-zinc-400 text-sm leading-relaxed">
+            {t("landing.whyVibeFails.speccIntro")}
+          </p>
+          <p className="text-zinc-700 dark:text-zinc-300 font-semibold text-sm">
+            {t("landing.whyVibeFails.speccProblem")}
+          </p>
+          <p className="text-zinc-500 dark:text-zinc-400 text-sm leading-relaxed">
+            {t("landing.whyVibeFails.speccDesc")}
+          </p>
+        </motion.div>
+
+        {/* Vibe vs Spec contrast */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.58 }}
+          className="mt-8 mx-auto max-w-xl grid grid-cols-2 gap-4"
+        >
+          <div className="flex flex-col items-center gap-2 p-5 rounded-2xl border border-red-200/70 bg-red-50 dark:bg-red-950/20 dark:border-red-900/40">
+            <span className="text-xs font-bold uppercase tracking-widest text-red-500 dark:text-red-400">
+              {t("landing.whyVibeFails.contrast.vibeLabel")}
+            </span>
+            <span className="text-sm text-zinc-600 dark:text-zinc-400 text-center leading-relaxed">
+              {t("landing.whyVibeFails.contrast.vibeDesc")}
+            </span>
+          </div>
+          <div className="flex flex-col items-center gap-2 p-5 rounded-2xl border border-indigo-200/70 bg-indigo-50 dark:bg-indigo-950/20 dark:border-indigo-800/40">
+            <span className="text-xs font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">
+              {t("landing.whyVibeFails.contrast.specLabel")}
+            </span>
+            <span className="text-sm text-zinc-600 dark:text-zinc-400 text-center leading-relaxed">
+              {t("landing.whyVibeFails.contrast.specDesc")}
+            </span>
+          </div>
         </motion.div>
       </div>
     </section>
