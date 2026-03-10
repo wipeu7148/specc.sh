@@ -159,10 +159,11 @@ show_missing_instructions() {
             printf "      将当前用户加入 docker 组（之后无需 sudo）：\n"
             printf "        ${CYAN}sudo usermod -aG docker \$USER && newgrp docker${NC}\n" ;;
           macos)
-            printf "      下载 Docker Desktop：\n"
+            printf "      下载 Docker Desktop for Mac：\n"
             printf "        ${CYAN}https://docs.docker.com/desktop/install/mac-install/${NC}\n"
             printf "      或使用 Homebrew：\n"
-            printf "        ${CYAN}brew install --cask docker${NC}\n" ;;
+            printf "        ${CYAN}brew install --cask docker${NC}\n"
+            printf "      安装后：打开 Docker Desktop，等待状态变为 Running 后继续。\n" ;;
         esac
       fi
       printf "\n  ${YELLOW}▸ 配置 Docker 国内加速镜像（可选，加速 Hub 拉取）：${NC}\n"
@@ -228,7 +229,7 @@ show_missing_instructions() {
       if $IS_WSL2; then
         printf "\n  ${CYAN}WSL2 environment detected. Recommended: Docker Desktop for Windows:${NC}\n\n"
         printf "      1. Install Docker Desktop on your Windows host:\n"
-        printf "         ${CYAN}https://www.docker.com/products/docker-desktop/${NC}\n\n"
+        printf "         ${CYAN}https://docs.docker.com/desktop/install/windows-install/${NC}\n\n"
         printf "      2. In Docker Desktop: Settings → Resources → WSL Integration\n"
         printf "         → Enable your WSL2 distro (e.g. Ubuntu), save & restart Docker Desktop\n\n"
         printf "      3. Reopen your WSL2 terminal and run ${CYAN}docker info${NC} to verify\n\n"
@@ -246,10 +247,11 @@ show_missing_instructions() {
             printf "      Add your user to the docker group (no sudo needed after):\n"
             printf "        ${CYAN}sudo usermod -aG docker \$USER && newgrp docker${NC}\n" ;;
           macos)
-            printf "      Download Docker Desktop:\n"
-            printf "        ${CYAN}https://www.docker.com/products/docker-desktop/${NC}\n"
+            printf "      Download Docker Desktop for Mac:\n"
+            printf "        ${CYAN}https://docs.docker.com/desktop/install/mac-install/${NC}\n"
             printf "      Or via Homebrew:\n"
-            printf "        ${CYAN}brew install --cask docker${NC}\n" ;;
+            printf "        ${CYAN}brew install --cask docker${NC}\n"
+            printf "      After install: open Docker Desktop and wait for it to show \"Running\".\n" ;;
           *)
             printf "      See: ${CYAN}https://docs.docker.com/get-docker/${NC}\n" ;;
         esac
@@ -285,14 +287,32 @@ show_missing_instructions() {
 
 # ── create docker-compose shim (helper used in multiple places) ───────────────
 _create_compose_shim() {
-  local run_as="$1"
-  # prefer tee so sudo works; fallback to direct write when root
-  if [ -n "$run_as" ]; then
-    printf '#!/bin/sh\nexec docker compose "$@"\n' | $run_as tee /usr/local/bin/docker-compose > /dev/null
-    $run_as chmod +x /usr/local/bin/docker-compose
+  # Auto-detect privilege escalation: explicit arg → tee via sudo;
+  # no arg but /usr/local/bin not writable → fall back to sudo tee;
+  # no arg and writable → direct write.
+  local target="/usr/local/bin/docker-compose"
+  local content='#!/bin/sh\nexec docker compose "$@"\n'
+  if [ -n "${1:-}" ]; then
+    printf "$content" | $1 tee "$target" > /dev/null && $1 chmod +x "$target"
+  elif [ -w "/usr/local/bin" ]; then
+    printf "$content" > "$target" && chmod +x "$target"
+  elif command -v sudo >/dev/null 2>&1; then
+    if [ "$LANG_MODE" = "zh" ]; then
+      info "写入 /usr/local/bin 需要 sudo 密码："
+    else
+      info "Writing to /usr/local/bin requires sudo:"
+    fi
+    printf "$content" | sudo tee "$target" > /dev/null && sudo chmod +x "$target"
   else
-    printf '#!/bin/sh\nexec docker compose "$@"\n' > /usr/local/bin/docker-compose
-    chmod +x /usr/local/bin/docker-compose
+    # Non-fatal: skip shim, warn instead of crashing.
+    if [ "$LANG_MODE" = "zh" ]; then
+      warn "无法写入 /usr/local/bin/docker-compose（无 sudo 权限），跳过 shim 创建。"
+      warn "如 make init 报错，请手动运行：sudo ln -sf /usr/local/bin/docker-compose"
+    else
+      warn "Cannot write /usr/local/bin/docker-compose (no sudo). Skipping shim."
+      warn "If make init fails, run: printf '#!/bin/sh\\nexec docker compose \"\$@\"\\n' | sudo tee /usr/local/bin/docker-compose && sudo chmod +x /usr/local/bin/docker-compose"
+    fi
+    return 0
   fi
 }
 
@@ -532,18 +552,35 @@ else
 fi
 
 # ── Docker daemon check ───────────────────────────────────────────────────────
+# macOS: try to auto-launch Docker Desktop; allow more time since it's a GUI app.
+_docker_max_tries=12
+[ "$OS" = "macos" ] && _docker_max_tries=25
 _docker_tries=0
 while ! docker info >/dev/null 2>&1; do
   _docker_tries=$((_docker_tries + 1))
-  if [ "$_docker_tries" -ge 12 ]; then
+  # On macOS, attempt to open Docker Desktop automatically on the first try.
+  if [ "$_docker_tries" -eq 1 ] && [ "$OS" = "macos" ]; then
+    if open -a Docker 2>/dev/null; then
+      if [ "$LANG_MODE" = "zh" ]; then
+        info "正在启动 Docker Desktop，请稍候..."
+      else
+        info "Launching Docker Desktop, please wait..."
+      fi
+    fi
+  fi
+  if [ "$_docker_tries" -ge "$_docker_max_tries" ]; then
     if [ "$LANG_MODE" = "zh" ]; then
-      if $IS_WSL2; then
+      if [ "$OS" = "macos" ]; then
+        error "Docker Desktop 未能就绪。\n  请手动打开 Docker Desktop 应用，等待状态栏图标变为 Running 后\n  重新运行此脚本。"
+      elif $IS_WSL2; then
         error "Docker 守护进程未运行。\n  请确认 Docker Desktop 已启动（右下角状态为 Running），\n  并在 Settings → Resources → WSL Integration 中已勾选当前发行版。"
       else
         error "Docker 守护进程未运行。请执行：sudo systemctl start docker"
       fi
     else
-      if $IS_WSL2; then
+      if [ "$OS" = "macos" ]; then
+        error "Docker Desktop did not become ready in time.\n  Please open Docker Desktop manually, wait until the status icon shows Running,\n  then re-run this script."
+      elif $IS_WSL2; then
         error "Docker daemon is not running.\n  Make sure Docker Desktop is running and WSL Integration is enabled\n  for this distro in Settings → Resources → WSL Integration."
       else
         error "Docker daemon is not running. Please run: sudo systemctl start docker"
@@ -551,9 +588,9 @@ while ! docker info >/dev/null 2>&1; do
     fi
   fi
   if [ "$LANG_MODE" = "zh" ]; then
-    info "等待 Docker 守护进程就绪... ($_docker_tries/12)"
+    info "等待 Docker 守护进程就绪... ($_docker_tries/$_docker_max_tries)"
   else
-    info "Waiting for Docker daemon... ($_docker_tries/12)"
+    info "Waiting for Docker daemon... ($_docker_tries/$_docker_max_tries)"
   fi
   sleep 2
 done
