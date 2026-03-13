@@ -119,7 +119,7 @@ export const landingZh = {
       monorepoComment: "# pnpm monorepo 结构",
       monorepoDescs: {
         server: "Hono + tRPC + Prisma",
-        web: "React 19 + Vite 7（SSR + CSR）",
+        web: "React 19 + Vite 8（SSR + CSR）",
         types: "Zod v4 schemas",
         components: "UI 设计系统",
         miniapp: "微信小程序 · Taro + React",
@@ -313,13 +313,13 @@ export const landingZh = {
           name: "Web 前台",
           desc: "面向用户的 Web 应用，50ms 内热更新，交互体验极速",
           badge: "CSR",
-          tech: "React 19 + Vite 7",
+          tech: "React 19 + Vite 8",
         },
         admin: {
           name: "后台系统",
           desc: "权限隔离的管理控制台，角色、多租户、工作区全部内置",
           badge: "CSR",
-          tech: "React 19 + Vite 7",
+          tech: "React 19 + Vite 8",
         },
         marketing: {
           name: "官网 / 营销页",

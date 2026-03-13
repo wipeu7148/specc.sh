@@ -85,7 +85,7 @@ make dev    # 启动所有服务
 specc.sh/
 ├── packages/
 │   ├── server/        # Hono + tRPC + Prisma + PostgreSQL 18
-│   ├── web/           # React 19 + Vite 7 + TailwindCSS 4（SSR + CSR）
+│   ├── web/           # React 19 + Vite 8 + TailwindCSS 4（SSR + CSR）
 │   ├── miniapp/       # 微信小程序 · Taro + React
 │   ├── types/         # 共享 Zod v4 Schema
 │   ├── components/    # UI 设计系统
@@ -253,7 +253,7 @@ cp packages/web/.env.example packages/web/.env
 |------|------|
 | 后端 | [Hono](https://hono.dev/) + [tRPC v11](https://trpc.io/) |
 | 数据库 | PostgreSQL 18 + [Prisma ORM](https://www.prisma.io/) |
-| 前端（Web） | React 19 + [Vite 7](https://vite.dev/) — SSR + CSR 混合 |
+| 前端（Web） | React 19 + [Vite 8](https://vite.dev/) — SSR + CSR 混合 |
 | 小程序 | [Taro](https://taro.js.org/) + React — 微信原生 |
 | 样式 | TailwindCSS 4 |
 | 校验 | Zod v4 |

@@ -122,7 +122,7 @@ export const landingEn: LandingSchema = {
       monorepoComment: "# pnpm monorepo structure",
       monorepoDescs: {
         server: "Hono + tRPC + Prisma",
-        web: "React 19 + Vite 7 (SSR + CSR)",
+        web: "React 19 + Vite 8 (SSR + CSR)",
         types: "Zod v4 schemas",
         components: "UI design system",
         miniapp: "WeChat Mini-Program · Taro + React",
@@ -318,13 +318,13 @@ export const landingEn: LandingSchema = {
           name: "Web Frontend",
           desc: "User-facing web app — sub-50ms HMR, instant interactions, zero SSR overhead",
           badge: "CSR",
-          tech: "React 19 + Vite 7",
+          tech: "React 19 + Vite 8",
         },
         admin: {
           name: "Admin Dashboard",
           desc: "Auth-gated management console with roles, multi-tenant workspaces, all built-in",
           badge: "CSR",
-          tech: "React 19 + Vite 7",
+          tech: "React 19 + Vite 8",
         },
         marketing: {
           name: "Marketing Site",

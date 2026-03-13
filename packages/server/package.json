@@ -12,7 +12,7 @@
     "typecheck": "tsc --noEmit",
     "dev": "tsx watch --tsconfig tsconfig.dev.json src/main.ts",
     "prebuild": "pnpm -C ../types build && pnpm -C ../i18n build",
-    "build": "rollup -c",
+    "build": "rolldown -c",
     "start": "node dist/main.js",
     "db:migrate": "prisma migrate dev",
     "db:push": "prisma db push",
@@ -34,12 +34,9 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@rollup/plugin-json": "^6.1.0",
-    "@rollup/plugin-node-resolve": "^16.0.3",
-    "@rollup/plugin-typescript": "^12.3.0",
     "@types/node": "^25.3.5",
     "prisma": "^7.4.2",
-    "rollup": "^4.54.0",
+    "rolldown": "^1.0.0-rc.9",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   }

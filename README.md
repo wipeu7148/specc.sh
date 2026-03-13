@@ -85,7 +85,7 @@ A production-ready TypeScript monorepo — batteries included:
 specc.sh/
 ├── packages/
 │   ├── server/        # Hono + tRPC + Prisma + PostgreSQL 18
-│   ├── web/           # React 19 + Vite 7 + TailwindCSS 4 (SSR + CSR)
+│   ├── web/           # React 19 + Vite 8 + TailwindCSS 4 (SSR + CSR)
 │   ├── miniapp/       # WeChat Mini-Program · Taro + React
 │   ├── types/         # Shared Zod v4 schemas
 │   ├── components/    # UI design system
@@ -100,8 +100,8 @@ specc.sh/
 
 | Platform | Technology | Rendering |
 |----------|-----------|----------|
-| **Web Frontend** | React 19 + Vite 7 | CSR — instant HMR, <50ms dev feedback |
-| **Admin Dashboard** | React 19 + Vite 7 | CSR — auth-gated SPA |
+| **Web Frontend** | React 19 + Vite 8 | CSR — instant HMR, <50ms dev feedback |
+| **Admin Dashboard** | React 19 + Vite 8 | CSR — auth-gated SPA |
 | **Marketing / Landing Site** | React Router v7 + Hono | SSR — SEO-indexed, first paint instant |
 | **WeChat Mini-Program** | Taro + React | Native mini-program, shared tRPC + types |
 | **Mobile App** | *(coming soon)* | — |
@@ -267,7 +267,7 @@ cp packages/web/.env.example packages/web/.env
 |-------|-----------|
 | Backend | [Hono](https://hono.dev/) + [tRPC v11](https://trpc.io/) |
 | Database | PostgreSQL 18 + [Prisma ORM](https://www.prisma.io/) |
-| Frontend (Web) | React 19 + [Vite 7](https://vite.dev/) — SSR + CSR hybrid |
+| Frontend (Web) | React 19 + [Vite 8](https://vite.dev/) — SSR + CSR hybrid |
 | Mini-Program | [Taro](https://taro.js.org/) + React — WeChat native |
 | Styling | TailwindCSS 4 |
 | Validation | Zod v4 |

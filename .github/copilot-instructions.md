@@ -7,7 +7,7 @@ TypeScript monorepo (pnpm workspaces): Hono backend, React frontend, shared type
 | Package | Purpose |
 |---------|---------|
 | `packages/server` | Hono + tRPC + Prisma ORM + PostgreSQL 18 |
-| `packages/web` | React 19 + Vite 7 + TailwindCSS 4 + TanStack Query v5 |
+| `packages/web` | React 19 + Vite 8 + TailwindCSS 4 + TanStack Query v5 |
 | `packages/types` | Shared Zod v4 schemas + TypeScript types |
 | `packages/components` | Reusable UI components (no business logic) |
 | `packages/i18n` | i18n locale resources |

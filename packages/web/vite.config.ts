@@ -1,11 +1,11 @@
 import { resolve } from "node:path";
 import { reactRouter } from "@react-router/dev/vite";
 import { defineConfig } from "vite";
-import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
-  plugins: [reactRouter(), tsconfigPaths()],
+  plugins: [reactRouter()],
   resolve: {
+    tsconfigPaths: true,
     alias: {
       "@/": `${resolve(__dirname, "src")}/`,
     },

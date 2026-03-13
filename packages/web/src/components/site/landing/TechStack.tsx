@@ -17,7 +17,7 @@ const STACK = [
     color: "text-blue-600 dark:text-blue-400",
     items: [
       { name: "React 19", descKey: "reactDesc" as const, logo: "⚛" },
-      { name: "Vite 7", descKey: "viteDesc" as const, logo: "⚡" },
+      { name: "Vite 8", descKey: "viteDesc" as const, logo: "⚡" },
       { name: "TailwindCSS 4", descKey: "tailwindDesc" as const, logo: "🎨" },
       { name: "TanStack Query", descKey: "tanstackDesc" as const, logo: "🔄" },
     ],
