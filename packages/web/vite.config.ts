@@ -1,9 +1,10 @@
 import { resolve } from "node:path";
+import tailwindcss from "@tailwindcss/vite";
 import { reactRouter } from "@react-router/dev/vite";
 import { defineConfig } from "vite";
 
 export default defineConfig({
-  plugins: [reactRouter()],
+  plugins: [reactRouter(), tailwindcss()],
   resolve: {
     tsconfigPaths: true,
     alias: {
