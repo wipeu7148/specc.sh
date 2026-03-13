@@ -24,7 +24,7 @@ COPY packages/i18n/src ./packages/i18n/src
 COPY packages/server/package.json ./packages/server/
 COPY packages/server/tsconfig.json ./packages/server/
 COPY packages/server/tsconfig.build.json ./packages/server/
-COPY packages/server/rollup.config.mjs ./packages/server/
+COPY packages/server/rolldown.config.mjs ./packages/server/
 
 # 安装所有依赖（包括 devDependencies，构建时需要）
 RUN pnpm install --frozen-lockfile
@@ -34,11 +34,11 @@ COPY packages/server/src ./packages/server/src
 COPY packages/server/prisma.config.ts ./packages/server/
 COPY packages/server/prisma ./packages/server/prisma/
 
-# 先构建 i18n（server rollup 会将其内联进 dist）
+# 先构建 i18n（server rolldown 会将其内联进 dist）
 WORKDIR /app/packages/i18n
 RUN pnpm build
 
-# 构建应用（rollup + preserveModules，保留模块结构的原生 ESM）
+# 构建应用（rolldown + preserveModules，保留模块结构的原生 ESM）
 WORKDIR /app/packages/server
 RUN pnpm build
 
@@ -50,7 +50,7 @@ RUN corepack enable && corepack prepare pnpm@10.15.1 --activate
 
 WORKDIR /app
 
-# 复制必要的配置文件（@specc/types 和 @specc/i18n 已由 rollup 内联到 server dist）
+# 复制必要的配置文件（@specc/types 和 @specc/i18n 已由 rolldown 内联到 server dist）
 COPY pnpm-workspace.yaml pnpm-lock.yaml package.json ./
 COPY packages/types/package.json ./packages/types/
 COPY packages/i18n/package.json ./packages/i18n/
